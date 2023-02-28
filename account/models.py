@@ -1,5 +1,6 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
+from django.core.validators import MaxValueValidator, MinValueValidator
 from django.utils.translation import gettext_lazy as _
 from django_resized import ResizedImageField
 from phonenumber_field.modelfields import PhoneNumberField
@@ -70,5 +71,24 @@ class User(TimeStampAbstractModel, AbstractUser):
     
     def __str__(self):
         return f'{self.get_full_name or str(self.phone)}'
+    
+    
+class RegistrationCode(TimeStampAbstractModel):
+    
+    class Meta:
+        verbose_name = _('регистрационный код')
+        verbose_name_plural = _('регистрационный код')
+        ordering = ('-created_at', '-updated_at')
+        
+    code = models.PositiveSmallIntegerField(_('код'), unique=True,
+                validators=[MinValueValidator(10000), MaxValueValidator(99999)])
+    note = models.CharField(_('заметка'), max_length=255, blank=True, null=True)
+    role = models.CharField(_('роль'), default=User.STAFF, 
+                max_length=50, choices=User.ROLES, blank=True)
+    
+    def __str__(self):
+        return f'{self.role} - {self.code}'
+    
+        
     
 # Create your models here.

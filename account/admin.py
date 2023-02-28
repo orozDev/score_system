@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from django.utils.safestring import mark_safe
 from django.utils.translation import gettext_lazy as _
-from .models import Group, User
+from .models import Group, RegistrationCode, User
 
 
 @admin.register(User)
@@ -82,6 +82,12 @@ class UserAdmin(BaseUserAdmin):
             return mark_safe(
                 f'<img src="{user.avatar.url}" alt="{user.get_full_name}" width="100px" />')
         return '-'
+
+@admin.register(RegistrationCode)  
+class RegistrationCodeAdmin(admin.ModelAdmin):
+    
+    list_display = ('code', 'role', 'note',)
+    list_filter = ('role',)  
     
 admin.site.register(Group)
        

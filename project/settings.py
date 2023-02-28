@@ -191,6 +191,24 @@ REST_REGISTRATION = {
     }
 }
 
+CORS_ORIGIN_ALLOW_ALL = True 
+
+CORS_ALLOW_HEADERS = [
+    'accept',
+    'accept-encoding',
+    'authorization',
+    'content-type',
+    'dnt',
+    'origin',
+    'user-agent',
+    'x-csrftoken',
+    'x-requested-with',
+    'Access-Control-Allow-Origin',
+]
+
+#CORS_ORIGIN_WHITELIST = json.loads(config('CORS_ORIGIN_WHITELIST'))
+
+
 CKEDITOR_UPLOAD_PATH = "uploads/"
 CKEDITOR_CONFIGS = {
     'default': {

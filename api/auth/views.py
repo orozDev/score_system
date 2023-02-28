@@ -11,8 +11,8 @@ from api.auth.filters import UserFilter
 from api.mixins import PaginationBreaker
 
 from api.paginations import StandardResultsSetPagination
-from .serializers import LoginSerializer, UserSerializer, ProfileSerializer
-from account.models import User
+from .serializers import LoginSerializer, RegisterUserSerializer, UserSerializer, ProfileSerializer
+from account.models import RegistrationCode, User
 
 
 class LoginApi(GenericAPIView):
@@ -29,8 +29,25 @@ class LoginApi(GenericAPIView):
             token = Token.objects.get_or_create(user=user)[0].key
             data = {**serializer.data, 'token': f'{token}'}   
             return Response(data, status.HTTP_200_OK)
-        return Response(
-            {'login': _('Не существует пользователя или неверный пароль')}, status.HTTP_400_BAD_REQUEST)  
+        return Response({'login': _('Не существует пользователя или неверный пароль')}, 
+                        status.HTTP_400_BAD_REQUEST)  
+        
+
+class RegisterApi(GenericAPIView):
+    
+    serializer_class = RegisterUserSerializer
+    permission_classes = (AllowAny,)
+
+    def post(self, request, *args, **kwargs):
+        serializer = self.serializer_class(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        user = serializer.save()
+        code = RegistrationCode.objects.get(code=request.data['code'])
+        code.delete()
+        response_serializer = UserSerializer(user, many=False, context={'request': request})
+        token = Token.objects.get_or_create(user=user)[0].key
+        data = {**response_serializer.data, 'token': f'{token}'}   
+        return Response(data, status.HTTP_201_CREATED)
         
 
 class ProfileApiView(GenericAPIView):
