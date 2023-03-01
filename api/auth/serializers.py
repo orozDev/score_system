@@ -1,13 +1,21 @@
 from rest_framework import serializers
 from django.utils.translation import gettext_lazy as _
 from django.core.validators import MaxValueValidator, MinValueValidator
-from account.models import RegistrationCode, User
+from account.models import Group, RegistrationCode, User
 from core.models import Point
 
 class LoginSerializer(serializers.Serializer):
     phone = serializers.CharField()
     password = serializers.CharField()
     
+
+class GroupSerializer(serializers.ModelSerializer):
+    
+    class Meta:
+        model = Group
+        fields = '__all__'
+        
+
 
 class PointAsStaffSerializer(serializers.ModelSerializer):
     

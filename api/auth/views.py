@@ -11,8 +11,8 @@ from api.auth.filters import UserFilter
 from api.mixins import PaginationBreaker
 
 from api.paginations import StandardResultsSetPagination
-from .serializers import LoginSerializer, RegisterUserSerializer, UserSerializer, ProfileSerializer
-from account.models import RegistrationCode, User
+from .serializers import GroupSerializer, LoginSerializer, RegisterUserSerializer, UserSerializer, ProfileSerializer
+from account.models import Group, RegistrationCode, User
 
 
 class LoginApi(GenericAPIView):
@@ -87,4 +87,10 @@ class UserViewSet(PaginationBreaker, viewsets.ReadOnlyModelViewSet):
     ordering_fields = ['phone', 'email', 'point', 'created_at']
     search_fields = ['phone', 'email', 'first_name', 'last_name', 'point']
     permission_classes = [IsAuthenticated,]
+    
+
+class UserGroupViewSet(viewsets.ReadOnlyModelViewSet):
+    queryset = Group.objects.all()
+    serializer_class = GroupSerializer
+    permission_classes = [IsAuthenticated]
     
