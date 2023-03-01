@@ -76,10 +76,6 @@ class Point(TimeStampAbstractModel):
                 self.head.point += avarage_point
                 self.head.save()
                  
-    
-        
-            
-    
     def __str__(self) -> str:
         return f'{self.head} - {self.staff}'
 

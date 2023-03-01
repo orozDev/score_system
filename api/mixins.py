@@ -15,6 +15,8 @@ class SerializersByAction(object):
     serializer_classes: dict
     
     def get_serializer_class(self):
+        if self.action == 'partial_update':
+            return self.serializer_classes.get('update', None)
         return self.serializer_classes.get(self.action, None)  
         
         
