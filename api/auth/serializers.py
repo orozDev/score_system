@@ -55,6 +55,8 @@ class UserSerializer(serializers.ModelSerializer):
             if points_as_staff.exists():
                 serializer = PointAsStaffSerializer(points_as_staff.first(), many=False)
                 point_as_staff = serializer.data
+            else: 
+                point_as_staff = None
         else: 
             point_as_staff = None
      
