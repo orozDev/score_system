@@ -5,6 +5,7 @@ django-admin-sortable2
 django-ckeditor
 django-cleanup
 django-cors-headers
+django-crontab
 django-filter
 django-jazzmin
 django-js-asset

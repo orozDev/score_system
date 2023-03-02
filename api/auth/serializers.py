@@ -3,6 +3,8 @@ from django.utils.translation import gettext_lazy as _
 from django.core.validators import MaxValueValidator, MinValueValidator
 from account.models import Group, RegistrationCode, User
 from core.models import Point
+from django.utils import timezone
+from pprint import pprint
 
 class LoginSerializer(serializers.Serializer):
     phone = serializers.CharField()
@@ -30,7 +32,6 @@ class UserSerializer(serializers.ModelSerializer):
     last_name = serializers.CharField(required=True)
     get_full_name = serializers.CharField(read_only=True)
     point = serializers.IntegerField(read_only=True)
-    points_as_staff = PointAsStaffSerializer(many=True, read_only=True)
     
     
     class Meta:
@@ -41,7 +42,26 @@ class UserSerializer(serializers.ModelSerializer):
             'password': {'write_only': True},
         }
         
-
+        
+    def to_representation(self, instance):
+        ret = super().to_representation(instance)
+        request = self.context['request']
+        year = request.GET.get('year', int(timezone.now().strftime('%Y')))
+        month = request.GET.get('month', int(timezone.now().strftime('%m')))
+        
+        points_as_staff = Point.objects.filter(
+                year=year, month=month, staff=instance, head=request.user)
+        
+        if points_as_staff.exists():
+            serializer = PointAsStaffSerializer(points_as_staff.first(), many=False)
+            point_as_staff = serializer.data
+        else: 
+            point_as_staff = None
+     
+        ret.setdefault('point_as_staff', point_as_staff)
+        return ret        
+      
+        
 class RegisterUserSerializer(serializers.ModelSerializer):
     
     first_name = serializers.CharField(required=True)

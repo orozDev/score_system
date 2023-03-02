@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'corsheaders',
     'django_filters',
     'django_cleanup',
+    'django_crontab',
     'ckeditor_uploader',
     'ckeditor',
     'adminsortable2',
@@ -208,6 +209,10 @@ CORS_ALLOW_HEADERS = [
 
 #CORS_ORIGIN_WHITELIST = json.loads(config('CORS_ORIGIN_WHITELIST'))
 
+#crontabs
+CRONJOBS = [
+    ('0 0 1 * *', 'crontab.jobs.point_distribution')
+]
 
 CKEDITOR_UPLOAD_PATH = "uploads/"
 CKEDITOR_CONFIGS = {
