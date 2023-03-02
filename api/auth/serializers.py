@@ -48,13 +48,13 @@ class UserSerializer(serializers.ModelSerializer):
         request = self.context['request']
         year = request.GET.get('year', int(timezone.now().strftime('%Y')))
         month = request.GET.get('month', int(timezone.now().strftime('%m')))
-        
-        points_as_staff = Point.objects.filter(
+        if request.user.is_authenticated:
+            points_as_staff = Point.objects.filter(
                 year=year, month=month, staff=instance, head=request.user)
         
-        if points_as_staff.exists():
-            serializer = PointAsStaffSerializer(points_as_staff.first(), many=False)
-            point_as_staff = serializer.data
+            if points_as_staff.exists():
+                serializer = PointAsStaffSerializer(points_as_staff.first(), many=False)
+                point_as_staff = serializer.data
         else: 
             point_as_staff = None
      

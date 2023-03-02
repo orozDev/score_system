@@ -34,7 +34,7 @@ class PermissionByAction(object):
        
         default_permission = api_settings.DEFAULT_PERMISSION_CLASSES
         permission_classes = self.permission_classes_by_action.get(self.action, None)  
-        if self.action == "update_partial":
+        if self.action == 'update_partial':
             permission_classes = self.permission_classes_by_action['update']
         if permission_classes is None:
             permission_classes = default_permission
