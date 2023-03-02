@@ -54,7 +54,7 @@ class Point(TimeStampAbstractModel):
         if self.staff.role != User.STAFF:
             raise ValidationError(f'{self.staff} должен быть {User.STAFF_TITLE}')
         
-        point = Point.objects.filter(month=self.month, year=self.year, head=self.head)
+        point = Point.objects.filter(month=self.month, year=self.year, head=self.head, staff=self.staff)
         if point.exists() and point.first().id != self.id:
             raise ValidationError(f'Балл в {self.month}-{self.year} с {self.head} уже существует')
         
