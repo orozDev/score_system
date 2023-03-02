@@ -26,7 +26,7 @@ class PointSerializer(serializers.ModelSerializer):
         if staff.role != User.STAFF:
             raise serializers.ValidationError({'staff': f'{staff} должен быть {User.STAFF_TITLE}'})
         
-        point = Point.objects.filter(month=month, year=year, head=head)
+        point = Point.objects.filter(month=month, year=year, head=head, staff=staff)
         if point.exists():
             raise serializers.ValidationError({'year': f'Балл в {month}-{year} с {head} уже существует'})
         
