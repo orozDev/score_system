@@ -10,4 +10,4 @@ def pre_delete_group(sender, instance, **kwargs):
     
     if year == instance.year and month == instance.month:
         instance.head.point += instance.value
-        instance.save()
+        instance.head.save()
