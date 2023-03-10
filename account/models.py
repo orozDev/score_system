@@ -51,11 +51,11 @@ class User(TimeStampAbstractModel, AbstractUser):
         upload_to='avatars/', force_format='WEBP', quality=90, 
         verbose_name=_('аватарка'), null=True, blank=True) 
     phone = PhoneNumberField(max_length=100, unique=True, verbose_name=_('номер телефона'))
-    email = models.EmailField(blank=True, verbose_name=_('электронная почта'), unique=True)
+    email = models.EmailField(verbose_name=_('электронная почта'), unique=True)
     group = models.ForeignKey(Group, on_delete=models.PROTECT, verbose_name=_('группа'),
-        related_name='users', blank=True, null=True)
+        related_name='users')
     point = models.PositiveIntegerField(_('баллы'), default=0)
-    role = models.CharField(_('роль'), default=STAFF, max_length=50, choices=ROLES, blank=True)
+    role = models.CharField(_('роль'), default=STAFF, max_length=50, choices=ROLES)
     last_activity = models.DateTimeField(blank=True, 
         null=True, verbose_name=_('последнее действие'))
   

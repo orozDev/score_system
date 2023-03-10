@@ -31,8 +31,7 @@ class LoginApi(GenericAPIView):
             return Response(data, status.HTTP_200_OK)
         return Response({'login': _('Не существует пользователя или неверный пароль')}, 
                         status.HTTP_400_BAD_REQUEST)  
-        
-
+            
 class RegisterApi(GenericAPIView):
     
     serializer_class = RegisterUserSerializer
@@ -86,11 +85,12 @@ class UserViewSet(PaginationBreaker, viewsets.ReadOnlyModelViewSet):
     filterset_class = UserFilter
     ordering_fields = ['phone', 'email', 'point', 'created_at']
     search_fields = ['phone', 'email', 'first_name', 'last_name', 'point']
-    permission_classes = [IsAuthenticated,]
+    permission_classes = [IsAuthenticated]
     
 
 class UserGroupViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Group.objects.all()
     serializer_class = GroupSerializer
     permission_classes = [IsAuthenticated]
+    pagination_class = None
     

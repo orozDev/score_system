@@ -10,7 +10,7 @@ from rest_framework.permissions import IsAuthenticated
 
 class PointViewSet(PaginationBreaker, PermissionByAction, SerializersByAction, viewsets.ModelViewSet):
     
-    queryset = Point.objects.all()
+    queryset = Point.objects.all().order_by('-year', '-month')
     serializer_classes = {
         'list': PointSerializer,
         'retrieve': PointSerializer,

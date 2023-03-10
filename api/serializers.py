@@ -31,7 +31,7 @@ class PointSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError({'year': f'Балл в {month}-{year} с {head} уже существует'})
         
         if head.point - value < 0:
-            raise serializers.ValidationError({'value': f'У советника "{head}" не достаточно баллов для выдиления'})
+            raise serializers.ValidationError({'value': f'У советника "{head}" недостаточно баллов для выдиления'})
         head.point -= value
         head.save()
         
@@ -40,9 +40,15 @@ class PointSerializer(serializers.ModelSerializer):
         
 class UpdatePointSerializer(serializers.ModelSerializer):
     
+    head = serializers.PrimaryKeyRelatedField(read_only=True)
+    staff = serializers.PrimaryKeyRelatedField(read_only=True)
+    month = serializers.IntegerField(read_only=True)
+    year = serializers.IntegerField(read_only=True)
+    
+    
     class Meta:
         model = Point
-        fields = ('value',)
+        fields = ('id', 'value', 'head', 'staff', 'month', 'year')
     
     def update(self, instance, validated_data):
   
@@ -51,7 +57,8 @@ class UpdatePointSerializer(serializers.ModelSerializer):
         if value > instance.value:
             avarage_point = value - instance.value
             if avarage_point > instance.head.point:
-                raise serializers.ValidationError({'value': f'У советника "{instance.head}" не достаточно баллов для выдиления'})
+                raise serializers.ValidationError(
+                    {'value': [f'У советника "{instance.head}" недостаточно баллов для выдиления']})
             instance.head.point -= avarage_point
             instance.head.save()
         else:

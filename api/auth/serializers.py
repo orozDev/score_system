@@ -32,6 +32,7 @@ class UserSerializer(serializers.ModelSerializer):
     last_name = serializers.CharField(required=True)
     get_full_name = serializers.CharField(read_only=True)
     point = serializers.IntegerField(read_only=True)
+    group = GroupSerializer(many=False)
     
     
     class Meta:

@@ -60,7 +60,7 @@ class Point(TimeStampAbstractModel):
         
         if self.id is None:
             if self.head.point - self.value < 0:
-                raise ValidationError(f'У советника "{self.head}" не достаточно баллов для выдиления')
+                raise ValidationError(f'У советника "{self.head}" недостаточно баллов для выдиления')
             self.head.point -= self.value
             self.head.save()
         else:
@@ -68,7 +68,7 @@ class Point(TimeStampAbstractModel):
             if self.value > point.value:
                 avarage_point = self.value - point.value
                 if avarage_point > self.head.point:
-                    raise ValidationError(f'У советника "{self.head}" не достаточно баллов для выдиления')
+                    raise ValidationError(f'У советника "{self.head}" недостаточно баллов для выдиления')
                 self.head.point -= avarage_point
                 self.head.save()
             else:
