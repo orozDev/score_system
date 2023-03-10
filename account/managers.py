@@ -23,7 +23,7 @@ class UserManager(BaseUserManager):
             raise ValueError(_('Phone must be set'))
         user = self.model(phone=phone, **extra_fields)
         user.set_password(password)
-        user.save(using=self._db)
+        user.save()
         return user
 
     def create_user(self, phone=None, password=None, **extra_fields):
