@@ -53,7 +53,7 @@ class User(TimeStampAbstractModel, AbstractUser):
     phone = PhoneNumberField(max_length=100, unique=True, verbose_name=_('номер телефона'))
     email = models.EmailField(verbose_name=_('электронная почта'), unique=True)
     group = models.ForeignKey(Group, on_delete=models.PROTECT, verbose_name=_('группа'),
-        related_name='users')
+        related_name='users', null=True)
     point = models.PositiveIntegerField(_('баллы'), default=0)
     role = models.CharField(_('роль'), default=STAFF, max_length=50, choices=ROLES)
     last_activity = models.DateTimeField(blank=True, 
