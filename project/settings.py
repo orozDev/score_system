@@ -207,6 +207,8 @@ CORS_ALLOW_HEADERS = [
     'Access-Control-Allow-Origin',
 ]
 
+CSRF_TRUSTED_ORIGINS = json.loads(config('CSRF_TRUSTED_ORIGINS'))
+
 #CORS_ORIGIN_WHITELIST = json.loads(config('CORS_ORIGIN_WHITELIST'))
 
 #crontabs
